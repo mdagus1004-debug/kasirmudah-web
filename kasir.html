@@ -1,63 +1,314 @@
 <!DOCTYPE html>
 <html lang="id"><head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KasirMudah - Kasir Warung & Kedai</title>
-<meta name="description" content="Aplikasi kasir untuk warung dan kedai di Indonesia & Malaysia. Jualan cepat, print struk, stok otomatis.">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KasirMudah App</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#fff;color:#1e293b}
-.top{position:sticky;top:0;background:#111827;color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;z-index:10}
-.top b{font-size:18px}.top b span{color:#ff6b00}
-.top a{background:#ff6b00;color:#fff;padding:8px 14px;border-radius:20px;text-decoration:none;font-weight:bold;font-size:13px}
-.hero{background:linear-gradient(135deg,#ff6b00,#ff9a00);color:#fff;padding:24px 16px;text-align:center}
-.hero h1{font-size:32px;line-height:1.2}.hero p{margin:10px 0;font-size:15px}
-.hero img{width:100%;max-width:720px;border-radius:18px;margin:14px auto;display:block;box-shadow:0 12px 30px rgba(0,0,0,0.15)}
-.btn{display:inline-block;background:#111827;color:#fff;padding:14px 22px;border-radius:12px;text-decoration:none;font-weight:bold;margin:6px}
-.btn-green{background:#25D366}
-.wrap{max-width:900px;margin:auto;padding:16px}
-.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:14px 0}
-@media(max-width:650px){.grid{grid-template-columns:1fr}}
-.card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:16px;text-align:center}
-.price{background:#fff7ed;border:2px solid #ff6b00;border-radius:16px;padding:16px;text-align:center;margin:14px 0}
-.demo{background:#111827;color:#fff;border-radius:16px;padding:16px;text-align:center;margin:14px 0}
-.demo code{background:#374151;padding:4px 8px;border-radius:6px}
-.footer{text-align:center;padding:16px;color:#64748b;font-size:12px}
+:root {
+  --primary: #ff6b00; --primary-hover: #e65c00; --dark: #111827;
+  --bg: #f8fafc; --surface: #ffffff; --text-main: #1e293b;
+  --text-muted: #64748b; --border: #e2e8f0; --radius: 12px;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:var(--font)}
+body{background:var(--bg);padding:16px;max-width:520px;margin:auto;color:var(--text-main);line-height:1.5}
+.top{background:var(--dark);color:#fff;padding:16px;border-radius:var(--radius);display:flex;justify-content:space-between;align-items:center;box-shadow:var(--shadow);margin-bottom:16px}
+.top b{font-size:20px;letter-spacing:-0.5px}.top b span{color:var(--primary)}
+.top span#roleTxt{background:rgba(255,255,255,0.1);padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;letter-spacing:0.5px}
+button{border:0;border-radius:10px;padding:12px 16px;font-weight:600;font-size:14px;cursor:pointer;transition:all 0.2s ease;box-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05)}
+button:active{transform:scale(0.98)}
+button:hover{opacity:0.9}
+select, input{width:100%;padding:14px;border:1px solid var(--border);border-radius:10px;margin:8px 0;font-size:15px;background:var(--surface);color:var(--text-main);outline:none;transition:border 0.2s}
+select:focus, input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(255,107,0,0.1)}
+label{font-size:13px;font-weight:600;color:var(--text-muted);display:block;margin-top:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.prod{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:left;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:space-between}
+.prod b{display:block;font-size:15px;margin-bottom:4px;color:var(--text-main)}
+.prod small{color:var(--text-muted);font-size:12px}
+.prod b[style*="color:#ff6b00"]{color:var(--primary)!important;font-size:16px;margin-top:8px}
+.prod:disabled{opacity:0.5;cursor:not-allowed;background:#f1f5f9;box-shadow:none}
+.cart,.panel{background:var(--surface);border-radius:var(--radius);padding:20px;margin-top:16px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.cart > b, .panel > b {font-size:16px;color:var(--dark)}
+.row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);gap:12px;font-size:14px}
+.row:last-child{border-bottom:none}
+.total{font-size:22px;font-weight:800;display:flex;justify-content:space-between;margin:16px 0;padding-top:16px;border-top:2px dashed var(--border);color:var(--dark)}
+.login{max-width:400px;margin:60px auto;background:var(--surface);padding:32px;border-radius:20px;text-align:center;box-shadow:0 10px 25px -5px rgba(0,0,0,0.1);border:1px solid var(--border)}
+.login h2{font-size:28px;margin-bottom:8px}
+.login button{background:var(--primary);color:#fff;width:100%;padding:16px;font-size:16px;margin-top:16px;border-radius:12px}
+.hidden{display:none}
+.muted{color:var(--text-muted);font-size:13px}
+#struk{display:none}
+@media print{
+ @page{size:58mm auto;margin:2mm}
+ body{background:#fff;padding:0;max-width:none}
+ body>*:not(#struk){display:none!important}
+ #struk{display:block;width:54mm;font-family:"Courier New",monospace;font-size:11px;color:#000}
+ #struk .c{text-align:center}
+ #struk .r{display:flex;justify-content:space-between}
+ #struk hr{border:0;border-top:1px dashed #000;margin:4px 0}
+}
 </style></head>
 <body>
-<div class="top"><b>Kasir<span>Mudah</span></b><a href="kasir.html">COBA DEMO</a></div>
 
-<div class="hero">
-<h1>Kasir Warung & Kedai</h1>
-<p>Indonesia & Malaysia. Jualan cepat, struk rapi, stok otomatis.</p>
-<img src="hero.svg" alt="KasirMudah di HP">
-<!-- Link di bawah ini sudah diarahkan ke kasir.html -->
-<a class="btn" href="kasir.html">COBA DEMO GRATIS</a>
-<a class="btn btn-green" href="https://wa.me/6287749140953?text=Halo%2C%20mau%20coba%20KasirMudah">WA 087749140953</a>
+<div id="login" class="login">
+<h2>Kasir<span style="color:var(--primary)">Mudah</span></h2>
+<p class="muted" style="margin:8px 0 16px 0">Masukkan PIN untuk melanjutkan</p>
+<input id="pin" type="password" inputmode="numeric" placeholder="PIN Anda" onkeydown="if(event.key==='Enter')masuk()">
+<button onclick="masuk()">MASUK APLIKASI</button>
+<p class="muted" style="margin-top:16px;font-size:12px">Mode demo: coba PIN Bos 1234 atau Owner 9999</p>
 </div>
 
-<div class="wrap">
-<div class="grid">
-<div class="card"><h3>10 Detik</h3><p>Jualan + print struk 58mm</p></div>
-<div class="card"><h3>Stok</h3><p>Otomatis berkurang tiap penjualan</p></div>
-<div class="card"><h3>Laporan</h3><p>Ringkasan penjualan harian per toko</p></div>
+<div id="app" class="hidden">
+<div class="top"><b>Kasir<span>Mudah</span></b><span id="roleTxt">BOS</span></div>
+
+<label for="toko">Pilih Toko</label>
+<select id="toko" onchange="gantiToko()"></select>
+
+<div class="grid" id="produk"></div>
+
+<div class="cart">
+<b>Keranjang Belanja</b>
+<div id="keranjang"></div>
+<div class="total"><span>Total</span><span id="totalTxt">0</span></div>
+<label id="bayarLbl">Uang Bayar</label>
+<input id="bayar" type="number" inputmode="decimal" min="0" step="any" placeholder="0" oninput="hitungKembali()">
+<div style="display:flex;justify-content:space-between;margin-top:12px;font-weight:600;"><span>Kembali</span><b id="kembaliTxt">0</b></div>
+<button style="background:var(--dark);color:#fff;width:100%;margin-top:16px;padding:16px;" onclick="bayar()">BAYAR &amp; PRINT</button>
+<label for="hp">No. WhatsApp Pelanggan (opsional)</label>
+<input id="hp" type="tel" inputmode="tel" placeholder="mis. 0812xxxx / 012xxxx">
+<button style="background:#25D366;color:#fff;width:100%;margin-top:8px;" onclick="kirimWA()">KIRIM STRUK KE WA</button>
+<button style="background:#f1f5f9;color:var(--text-main);width:100%;margin-top:8px;" onclick="resetKeranjang()">Reset Keranjang</button>
 </div>
 
-<div class="price">
-<h2>Harga</h2>
-<p style="margin:8px 0"><b>Indonesia: Rp 49.000 / bulan</b><br><b>Malaysia: RM 29 / bulan</b></p>
-<p style="font-size:13px">Trial 7 hari. Tanpa kartu kredit. Daftar lewat WhatsApp.</p>
+<!-- PANEL LAPORAN -->
+<div id="laporanBox" class="panel hidden" style="margin-top:16px;">
+<b>Laporan Penjualan</b>
+<div id="laporan"></div>
 </div>
 
-<div class="demo">
-<b>Demo - Coba Sekarang</b>
-<p style="margin:8px 0">Pencet tombol di bawah, lalu masukkan PIN</p>
-<p>Owner: <code>9999</code> | Bos: <code>1234</code> | Karyawan: <code>1111</code></p>
-<p style="font-size:12px;margin-top:8px;color:#cbd5e1">Mode demo: data tersimpan di browser perangkat Anda.</p>
-<!-- Link di bawah ini juga sudah diarahkan ke kasir.html -->
-<p style="margin-top:10px"><a class="btn" href="kasir.html" style="background:#ff6b00">BUKA APP</a></p>
-</div>
+<!-- PANEL KELOLA PRODUK (BARU) -->
+<div id="kelolaProdukBox" class="panel hidden" style="margin-top:16px;">
+<div id="kelolaProduk"></div>
 </div>
 
-<div class="footer">© 2026 KasirMudah.app • WA 087749140953 • Johor Bahru</div>
+<button style="background:var(--surface);border:1px solid var(--border);color:var(--text-muted);width:100%;margin-top:16px;" onclick="logout()">Keluar Akun</button>
+</div>
+
+<div id="struk"></div>
+
+<script>
+const KEY='kasirmudah_v1';
+const DEFAULT=[
+{id:'my1',name:'Kedai Makcik - Johor (RM)',cur:'RM',items:[{n:'Nasi Lemak',p:850,s:20},{n:'Kopi O',p:450,s:30},{n:'Teh Tarik',p:500,s:30},{n:'Roti Canai',p:650,s:15}]},
+{id:'id1',name:'Warung Budi - Jakarta (Rp)',cur:'Rp',items:[{n:'Nasi Goreng',p:18000,s:20},{n:'Es Teh',p:5000,s:30},{n:'Kopi Hitam',p:8000,s:25}]}
+];
+let stores,sales,curStore,cart={},role='BOS',lastSale=null;
+
+function load(){
+ try{const d=JSON.parse(localStorage.getItem(KEY));if(d&&Array.isArray(d.stores)){stores=d.stores;sales=d.sales||[];return;}}catch(e){}
+ stores=JSON.parse(JSON.stringify(DEFAULT));sales=[];
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({stores:stores,sales:sales}));}catch(e){}}
+load();
+curStore=stores[0];
+
+const tokoEl=document.getElementById('toko');
+stores.forEach(s=>{const o=document.createElement('option');o.value=s.id;o.textContent=s.name;tokoEl.appendChild(o);});
+
+function mul(s){return (s||curStore).cur==='RM'?100:1;}
+function fmtS(s,v){return s.cur==='RM'?'RM '+(v/100).toFixed(2):'Rp '+Math.round(v).toLocaleString('id-ID');}
+function fmt(v){return fmtS(curStore,v);}
+function esc(t){return String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+function masuk(){
+ const pin=document.getElementById('pin').value;
+ if(pin==='9999')role='OWNER';
+ else if(pin==='1234')role='BOS';
+ else if(pin==='1111')role='KARYAWAN';
+ else{alert('PIN salah!');return;}
+ document.getElementById('login').classList.add('hidden');
+ document.getElementById('app').classList.remove('hidden');
+ document.getElementById('roleTxt').textContent=role;
+ document.getElementById('laporanBox').classList.toggle('hidden',role==='KARYAWAN');
+ render();
+}
+function gantiToko(){
+ curStore=stores.find(s=>s.id===tokoEl.value);
+ cart={};document.getElementById('bayar').value='';
+ document.getElementById('kelolaProdukBox').classList.add('hidden');
+ document.getElementById('laporanBox').classList.toggle('hidden',role==='KARYAWAN');
+ render();
+}
+function render(){
+ let h='';
+ curStore.items.forEach((it,i)=>{
+  const habis=it.s<=0;
+  h+=`<button class="prod" ${habis?'disabled':''} onclick="tambah(${i})"><b>${esc(it.n)}</b><small>Stok: ${it.s}</small><br><b style="color:#ff6b00">${fmt(it.p)}</b><br><small>${habis?'Habis':'+ Tambah'}</small></button>`;
+ });
+ document.getElementById('produk').innerHTML=h;
+ document.getElementById('bayarLbl').textContent='Uang Bayar ('+(curStore.cur==='RM'?'RM, mis. 10 atau 10.50':'Rp, mis. 20000')+')';
+ renderCart();renderLaporan();
+}
+function tambah(i){
+ const it=curStore.items[i];
+ if((cart[i]||0)>=it.s){alert('Stok '+it.n+' tidak cukup');return;}
+ cart[i]=(cart[i]||0)+1;renderCart();
+}
+function kurang(i){cart[i]--;if(cart[i]<=0)delete cart[i];renderCart();}
+function totalVal(){let t=0;for(const i in cart)t+=curStore.items[i].p*cart[i];return t;}
+function renderCart(){
+ let h='';
+ for(const i in cart){
+  const it=curStore.items[i],q=cart[i];
+  h+=`<div class="row"><span>${esc(it.n)} x ${q} <button onclick="kurang(${i})" style="padding:4px 10px;background:#fee2e2;color:#dc2626;border-radius:6px;margin-left:8px;box-shadow:none;">-</button></span><b>${fmt(it.p*q)}</b></div>`;
+ }
+ if(!h)h='<p class="muted" style="padding:12px 0;text-align:center;">Belum ada barang. Pencet produk di atas.</p>';
+ document.getElementById('keranjang').innerHTML=h;
+ document.getElementById('totalTxt').textContent=fmt(totalVal());
+ hitungKembali();
+}
+function bayarUnits(){return Math.round(Number(document.getElementById('bayar').value||0)*mul());}
+function hitungKembali(){
+ document.getElementById('kembaliTxt').textContent=fmt(Math.max(0,bayarUnits()-totalVal()));
+}
+function cartItems(){return Object.keys(cart).map(i=>({n:curStore.items[i].n,q:cart[i],p:curStore.items[i].p}));}
+
+function bayar(){
+ const tot=totalVal();
+ if(tot===0){alert('Keranjang kosong');return;}
+ const b=bayarUnits();
+ if(b<tot){alert('Uang bayar kurang! Total '+fmt(tot));return;}
+ for(const i in cart)curStore.items[i].s-=cart[i];
+ const sale={t:Date.now(),store:curStore.id,items:cartItems(),total:tot,bayar:b};
+ sales.push(sale);lastSale=sale;save();
+ cetak(sale);
+ resetKeranjang();render();
+}
+function cetak(sale){
+ const s=stores.find(x=>x.id===sale.store);
+ const d=new Date(sale.t);
+ let h=`<div class="c"><b>${esc(s.name)}</b><br>${d.toLocaleString('id-ID')}</div><hr>`;
+ sale.items.forEach(it=>{
+  h+=`<div>${esc(it.n)}</div><div class="r"><span>${it.q} x ${fmtS(s,it.p)}</span><span>${fmtS(s,it.p*it.q)}</span></div>`;
+ });
+ h+=`<hr><div class="r"><b>TOTAL</b><b>${fmtS(s,sale.total)}</b></div>`;
+ h+=`<div class="r"><span>Bayar</span><span>${fmtS(s,sale.bayar)}</span></div>`;
+ h+=`<div class="r"><span>Kembali</span><span>${fmtS(s,sale.bayar-sale.total)}</span></div><hr><div class="c">Terima kasih<br>KasirMudah.app</div>`;
+ document.getElementById('struk').innerHTML=h;
+ window.print();
+}
+function resetKeranjang(){cart={};document.getElementById('bayar').value='';renderCart();}
+
+function normHP(raw,cur){
+ let n=String(raw||'').replace(/\D/g,'');
+ if(!n)return '';
+ const cc=cur==='RM'?'60':'62';
+ if(n.startsWith('00'))n=n.slice(2);
+ else if(n.startsWith('0'))n=cc+n.slice(1);
+ return n;
+}
+function kirimWA(){
+ let items,store,tot;
+ if(Object.keys(cart).length){items=cartItems();store=curStore;tot=totalVal();}
+ else if(lastSale&&lastSale.store===curStore.id){items=lastSale.items;store=curStore;tot=lastSale.total;}
+ else{alert('Belum ada transaksi. Isi keranjang atau selesaikan pembayaran dulu.');return;}
+ let msg='Struk '+store.name+'\n';
+ items.forEach(it=>{msg+=it.n+' x '+it.q+' = '+fmtS(store,it.p*it.q)+'\n';});
+ msg+='Total: '+fmtS(store,tot)+'\nTerima kasih - KasirMudah';
+ const hp=normHP(document.getElementById('hp').value,store.cur);
+ window.open('https://wa.me/'+hp+'?text='+encodeURIComponent(msg),'_blank');
+}
+
+// --- FITUR KELOLA PRODUK BARU ---
+function renderLaporan(){
+ if(role==='KARYAWAN')return;
+ const today=new Date().toDateString();
+ const list=role==='OWNER'?stores:[curStore];
+ let h='';
+ list.forEach(s=>{
+  const ss=sales.filter(x=>x.store===s.id&&new Date(x.t).toDateString()===today);
+  const sum=ss.reduce((a,x)=>a+x.total,0);
+  h+=`<div class="row"><span>${esc(s.name)}<br><small class="muted">${ss.length} transaksi hari ini</small></span><b>${fmtS(s,sum)}</b></div>`;
+ });
+ h+='<p style="margin-top:16px;font-weight:bold;">Transaksi terakhir</p>';
+ const recent=sales.filter(x=>list.some(s=>s.id===x.store)).slice(-8).reverse();
+ if(!recent.length)h+='<p class="muted" style="padding:6px 0">Belum ada transaksi.</p>';
+ recent.forEach(x=>{
+  const s=stores.find(y=>y.id===x.store);
+  h+=`<div class="row"><span><small class="muted">${new Date(x.t).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}</small> ${x.items.map(i=>esc(i.n)+' x'+i.q).join(', ')}</span><b>${fmtS(s,x.total)}</b></div>`;
+ });
+ h+='<p style="margin-top:16px;font-weight:bold;">Tambah stok (+10)</p>';
+ curStore.items.forEach((it,i)=>{
+  h+=`<div class="row"><span>${esc(it.n)} <small class="muted">(stok ${it.s})</small></span><button style="background:#dcfce7;color:#166534;padding:6px 12px;font-size:12px;" onclick="restok(${i})">+10</button></div>`;
+ });
+ 
+ if(role==='OWNER'){
+  h+='<button style="background:var(--primary);color:#fff;width:100%;margin-top:16px;font-weight:bold;" onclick="bukaKelolaProduk()">📦 Kelola Produk / Tambah Barang</button>';
+  h+='<button style="background:#fee2e2;color:#991b1b;width:100%;margin-top:8px;" onclick="resetData()">Reset semua data demo</button>';
+ }
+ h+='<p class="muted" style="font-size:11px;margin-top:16px;text-align:center;">Mode demo: data tersimpan di browser perangkat ini saja.</p>';
+ document.getElementById('laporan').innerHTML=h;
+}
+
+function bukaKelolaProduk() {
+ document.getElementById('laporanBox').classList.add('hidden');
+ document.getElementById('kelolaProdukBox').classList.remove('hidden');
+ renderKelolaProduk();
+}
+function tutupKelolaProduk() {
+ document.getElementById('kelolaProdukBox').classList.add('hidden');
+ document.getElementById('laporanBox').classList.remove('hidden');
+ render(); 
+}
+function renderKelolaProduk() {
+ let h = `<b>Daftar Produk di ${curStore.name}</b>`;
+ curStore.items.forEach((it, i) => {
+  h+=`<div class="row"><span>${esc(it.n)}<br><small class="muted">Harga: ${fmt(it.p)} | Stok: ${it.s}</small></span><button style="background:#fee2e2;color:#dc2626;padding:6px 10px;font-size:12px;" onclick="hapusProduk(${i})">Hapus</button></div>`;
+ });
+ h += `
+  <div style="margin-top:20px; border-top:2px dashed #e2e8f0; padding-top:16px;">
+   <b>Tambah Produk Baru</b>
+   <input id="newNama" type="text" placeholder="Nama Produk (mis: Mie Ayam)">
+   <input id="newHarga" type="number" placeholder="Harga (mis: ${curStore.cur==='RM'?'10 atau 10.50':'15000'})">
+   <input id="newStok" type="number" placeholder="Stok Awal (mis: 20)">
+   <button style="background:#10b981;color:#fff;width:100%;margin-top:8px;" onclick="simpanProdukBaru()">Simpan Produk</button>
+  </div>
+  <button style="background:#f1f5f9;color:#1e293b;width:100%;margin-top:16px;" onclick="tutupKelolaProduk()">⬅ Kembali ke Kasir</button>
+ `;
+ document.getElementById('kelolaProduk').innerHTML = h;
+}
+function simpanProdukBaru() {
+ const nama = document.getElementById('newNama').value;
+ let harga = parseFloat(document.getElementById('newHarga').value);
+ const stok = parseInt(document.getElementById('newStok').value);
+ 
+ if(!nama || isNaN(harga) || isNaN(stok)) return alert("Isi semua data dengan benar!");
+ 
+ let finalPrice = harga;
+ if(curStore.cur === 'RM') finalPrice = Math.round(harga * 100);
+ 
+ curStore.items.push({ n: nama, p: finalPrice, s: stok });
+ save();
+ renderKelolaProduk();
+ 
+ document.getElementById('newNama').value = '';
+ document.getElementById('newHarga').value = '';
+ document.getElementById('newStok').value = '';
+ alert('Produk berhasil ditambahkan!');
+}
+function hapusProduk(index) {
+ if(!confirm('Yakin ingin menghapus produk ini?')) return;
+ curStore.items.splice(index, 1);
+ save();
+ renderKelolaProduk();
+}
+
+function restok(i){curStore.items[i].s+=10;save();render();}
+function resetData(){
+ if(!confirm('Hapus semua penjualan dan kembalikan stok awal?'))return;
+ try{localStorage.removeItem(KEY);}catch(e){}
+ location.reload();
+}
+function logout(){location.reload();}
+</script>
 </body></html>
