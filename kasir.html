@@ -423,4 +423,29 @@ function simpanProdukBaru() {
  
  curStore.items.push({ n: nama, p: finalPrice, s: stok, cat: cat, img: base64Img });
  save();
- renderKelo
+ renderKelolaProduk(); // <-- Ini menyambung tulisan renderKelo... di atasnya
+  
+  document.getElementById('newNama').value = '';
+  document.getElementById('newHarga').value = '';
+  document.getElementById('newStok').value = '';
+  document.getElementById('newImg').value = '';
+  document.getElementById('imgPreview').style.display = 'none';
+  base64Img = '';
+  
+  alert('Produk berhasil ditambahkan!');
+}
+function hapusProduk(index) {
+ if(!confirm('Yakin ingin menghapus produk ini?')) return;
+ curStore.items.splice(index, 1);
+ save();
+ renderKelolaProduk();
+}
+
+function resetData(){
+ if(!confirm('Hapus semua penjualan dan kembalikan stok awal?'))return;
+ try{localStorage.removeItem(KEY);}catch(e){}
+ location.reload();
+}
+function logout(){location.reload();}
+</script>
+</body></html>
